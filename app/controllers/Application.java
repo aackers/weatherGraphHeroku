@@ -28,7 +28,7 @@ public class Application extends Controller {
             connection = DatabaseConnectionFactory.getConnection();
 
             Statement stmt = connection.createStatement();
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS weatherData (bigint temperature NOT NULL, recorded_date timestamp)");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS weatherData (temperature bigint NOT NULL, recorded_date timestamp)");
             Random random = new Random();
 
             stmt.executeUpdate("INSERT INTO weatherData VALUES (" +  random.nextInt() + ", now())");
