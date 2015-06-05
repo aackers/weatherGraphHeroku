@@ -13,6 +13,8 @@
     </head>
     <body>
         @content
-        {{name}}
+        <div ng-controller="TemperatureController">
+            {{getData()}}
+        </div>
     </body>
 </html>
