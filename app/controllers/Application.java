@@ -1,20 +1,17 @@
 package controllers;
 
 import database.DatabaseConnectionFactory;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import play.*;
-import play.mvc.*;
-
-import views.html.*;
+import play.mvc.Controller;
+import play.mvc.Result;
+import views.html.index;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Random;
 
 public class Application extends Controller {
 
@@ -31,13 +28,15 @@ public class Application extends Controller {
             connection = DatabaseConnectionFactory.getConnection();
 
             Statement stmt = connection.createStatement();
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-            stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-            ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS weatherData (bigint temperature NOT NULLABLE, recorded_date timestamp)");
+            Random random = new Random();
+
+            stmt.executeUpdate("INSERT INTO weatherData VALUES (" +  random.nextInt() + ", now())");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM weatherData");
 
             String out = "Hello!\n";
             while (rs.next()) {
-                out += "Read from DB: " + rs.getTimestamp("tick") + "\n";
+                out += "Read from DB: " + rs.getInt("temperature") + " " + rs.getTimestamp("recorded_date") + "\n";
             }
 
             return out;
