@@ -1,23 +1,23 @@
 package domain;
 
 
-import java.sql.Timestamp;
+import org.joda.time.DateTime;
 
 public class TemperatureRecord {
 
-    private int temperature;
-    private Timestamp recordedTime;
+    private double temperature;
+    private String recordedTime;
 
-    public TemperatureRecord(int temperature, Timestamp recordedTime) {
+    public TemperatureRecord(double temperature, String recordedTime) {
         this.temperature = temperature;
         this.recordedTime = recordedTime;
     }
 
-    public int getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 
-    public Timestamp getRecordedTime() {
+    public String getRecordedTime() {
         return recordedTime;
     }
 }

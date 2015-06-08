@@ -2,9 +2,11 @@
 
 <!DOCTYPE html>
 
-<html ng-app="myApp">
+<html ng-app="myApp" ng-controller="myCtrl">
     <head>
         <title>@title</title>
+            <!--Load the AJAX API-->
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
@@ -13,8 +15,11 @@
     </head>
     <body>
         @content
-        <div ng-controller="TemperatureController">
-            {{getData()}}
+        <div>
+            <p>{{firstName}} {{lastName}}</p>
+            <p>{{records}}</p>
         </div>
+        <div id="chart_div"></div>
+        <div id="table_div"></div>
     </body>
 </html>

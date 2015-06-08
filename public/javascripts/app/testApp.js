@@ -1,15 +1,64 @@
 var app = angular.module('myApp', []);
 
-app.run(function($rootScope) {
-    $rootScope.name = "Avidan Ackerson";
+google.load('visualization', '1', {
+    packages: ['corechart', 'table']
 });
 
-app.controller('TemperatureControl', ['$scope', function($scope) {
-    // get names using AngularJS AJAX API
-    $scope.getData = function() {
-        $http.get('/data').success(function(data) {
-            $scope.temperatureRecords = data;
-            $rootScope.temperatureRecords = data;
+
+app.controller('myCtrl', function($scope, $http, $interval) {
+
+    $scope.loadData = function() {
+        $http.get("/data").then(function(response) {
+            $scope.records = response.data;
+            drawChart($scope.records);
+            drawTable($scope.records);
         });
+    };
+
+    $scope.loadData();
+
+    $interval(function() {
+        $scope.loadData();
+    }, 600000);
+    // Set a callback to run when the Google Visualization API is loaded.
+    //google.setOnLoadCallback(drawChart);
+
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart(tempData) {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('datetime', 'Date');
+        data.addColumn('number', 'Temperature');
+        angular.forEach(tempData, function(key, value){
+            data.addRow([new Date(key.recordedTime), key.temperature]);
+        });
+
+        // Set chart options
+        var options = {'title':'Temperature Over Time',
+            'width':700,
+            'height':700};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
     }
-}]);
+
+    function drawTable(tempData) {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('datetime', 'Date');
+        data.addColumn('number', 'Temperature');
+        angular.forEach(tempData, function(key, value){
+            data.addRow([new Date(key.recordedTime), key.temperature]);
+        });
+
+        // Instantiate and draw our chart, passing in some options.
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+        table.draw(data);
+    }
+
+});

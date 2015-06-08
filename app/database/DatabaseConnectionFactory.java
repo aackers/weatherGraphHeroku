@@ -9,7 +9,11 @@ import java.sql.SQLException;
 public class DatabaseConnectionFactory {
 
     public static Connection getConnection() throws URISyntaxException, SQLException {
-        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        String database_url = System.getenv("DATABASE_URL");
+        if (database_url == null) {
+            return null;
+        }
+        URI dbUri = new URI(database_url);
 
         String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];
