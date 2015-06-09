@@ -8,10 +8,9 @@ google.load('visualization', '1', {
 app.controller('myCtrl', function($scope, $http, $interval) {
 
     $scope.loadData = function() {
-        $http.get("/data").then(function(response) {
-            $scope.records = response.data;
-            drawChart($scope.records);
-            drawTable($scope.records);
+        $http.get("/test").then(function(response) {
+            drawChart(response.data);
+            drawTable(response.data);
         });
     };
 
@@ -43,22 +42,9 @@ app.controller('myCtrl', function($scope, $http, $interval) {
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-    }
-
-    function drawTable(tempData) {
-
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('datetime', 'Date');
-        data.addColumn('number', 'Temperature');
-        angular.forEach(tempData, function(key, value){
-            data.addRow([new Date(key.recordedTime), key.temperature]);
-        });
-
-        // Instantiate and draw our chart, passing in some options.
         var table = new google.visualization.Table(document.getElementById('table_div'));
+
+        chart.draw(data, options);
         table.draw(data);
     }
-
 });

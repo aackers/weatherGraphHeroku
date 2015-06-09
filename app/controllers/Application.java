@@ -26,7 +26,7 @@ import org.json.*;
 public class Application extends Controller {
 
     public static Result index() throws ServletException, IOException {
-        return ok(index.render("Temperature Data!"));
+        return ok(index.render("Last 2 hours of temperatures"));
     }
 
     public static Result getData() throws URISyntaxException, SQLException {
