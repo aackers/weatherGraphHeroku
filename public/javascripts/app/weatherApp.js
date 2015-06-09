@@ -8,7 +8,7 @@ google.load('visualization', '1', {
 app.controller('myCtrl', function($scope, $http, $interval) {
 
     $scope.loadData = function() {
-        $http.get("/test").then(function(response) {
+        $http.get("/data").then(function(response) {
             drawChart(response.data);
             drawTable(response.data);
         });
